@@ -5,22 +5,42 @@
       Ubuntu, Cantarell, sans-serif;
       border: 20px;
       background: var(--card-bg);
-      margin: 20px;
+      /* margin: 20px; */
       border-radius: 30px;
       background-color: white;
       padding: 20px 10px;
+      width: 90%;
+      min-height: 300px;
+    /* background-color: rebeccapurple; */
     .todoTitle{
         font-weight: 500;
     }
 }
+.centerAlign{
+    display: flex;
+    justify-content: center;
+}
    .todoIcon{
+    text-align: center;
         img{
-            max-width: 100px;
+            max-width: 150px;
         }
     }
     .todoDetails{
         display: flex;
         justify-content: space-between;
-        font-size: 12px;
+        font-size: 10px;
         color: #646667;
+        float: inline-end;
+        /* margin-top: auto; */
+    }
+    .createButton{
+        float: right;
+        background:#00b7eb  ;
+        border-radius: 100%;
+        border: 1px solid white;
+        color: white;
+        font-weight: 900;
+        padding: 20 px;
+        font-size: 20px;
     }

@@ -17,17 +17,15 @@ userId:number;
     isLoading: boolean;
     errorMsg: string | null;
   }
-//   export interface User {
-//     id: number;
-//     name: string;
-//     email: string;
-//   }
-  
-//   export interface UserState {
-//     users: User[];
-//     isLoading: boolean;
-//     errorMsg: string | null;
-//   }
+  export interface TodoFormData {
+    todo: string;
+    userId: string;
+}
+
+export interface TodoFormErrors {
+    todo: string;
+    userId: string;
+}
   export type Action =
     | { type: "LOADING" }
     | { type: "SET_TODOS"; payload: Todo[] }
