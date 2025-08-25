@@ -28,7 +28,7 @@ function App() {
     <Router>
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
-          <Route path="/" element={<Login />} />
+          {/* //<Route path="/" element={<Dashboard />} /> */}
           <Route path="/login" element={<Login />} />
           <Route element={<PrivateRoute isAuthenticated={isAuthenticated} defaultRoute={''} />}>
             <Route path="/dashboard" element={<Dashboard />} />
