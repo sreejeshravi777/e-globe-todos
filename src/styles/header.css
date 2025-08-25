@@ -1,0 +1,25 @@
+@import './variables.css';
+
+.header-navbar {
+  background-color: var(--primary-color) !important;
+}
+
+.header-brand {
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.header-brand:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.header-search-form {
+  display: flex;
+  align-items: center;
+}
+
+.header-search-input {
+  margin-right: var(--spacing-sm);
+}

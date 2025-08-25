@@ -1,51 +1,52 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppContext } from "../context/todoContext";
 import CardView from "../components/common/card";
 import InputText from "../components/common/input.text";
 import FixedSizeGrid from "../components/common/FixedSizeGrid";
 import { TodoFormErrors, TodoFormData, Todo } from "../types/type";
-import { Container, Row, Col, Modal, Button } from "react-bootstrap";
+import { Container, Modal, Button } from "react-bootstrap";
 import { validateTodoForm, clearFieldError } from "../services/formValidation";
+import "../styles/dashboard.css";
 import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    DragEndEvent,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  rectSortingStrategy,
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    rectSortingStrategy,
 } from "@dnd-kit/sortable";
 import {
-  useSortable,
+    useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Header from "../components/header";
 
 const SortableCard: React.FC<{ todo: Todo }> = ({ todo }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id: todo.id });
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({ id: todo.id });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
 
-  return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <CardView cardData={todo} />
-    </div>
-  );
+    return (
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+            <CardView cardData={todo} />
+        </div>
+    );
 };
 
 const Dashboard: React.FC = () => {
@@ -53,7 +54,6 @@ const Dashboard: React.FC = () => {
     const [todos, setTodos] = React.useState<Todo[]>([]);
     const [searchText, setSearchText] = useState<string>('');
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-    const divElement = document.getElementById('parent');
 
     const [formData, setFormData] = useState<TodoFormData>({
         todo: '',
@@ -67,18 +67,18 @@ const Dashboard: React.FC = () => {
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
     );
-    
+
     useEffect(() => {
         getUsers();
     }, []);
-    
+
     useEffect(() => {
         setTodos(state.todos);
     }, [state])
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
-        
+
         if (over && active.id !== over.id) {
             const oldIndex = todos.findIndex((todo) => todo.id === active.id);
             const newIndex = todos.findIndex((todo) => todo.id === over.id);
@@ -127,15 +127,6 @@ const Dashboard: React.FC = () => {
                 completed: false
             };
             setTodos(prev => [...prev, newTodo]);
-            
-            // Scroll to bottom after adding new todo
-            setTimeout(() => {
-                const scrollBotton = document.getElementById('parent');
-                if (scrollBotton) {
-                  scrollBotton.scrollTop = scrollBotton.scrollHeight;
-                }
-            }, 100);
-
             handleClose();
         }
     };
@@ -144,58 +135,54 @@ const Dashboard: React.FC = () => {
     if (state.isLoading) return <p>Loading...</p>;
     if (state.errorMsg) return <p>Error: {state.errorMsg}</p>;
     return (
-        <div style={{ backgroundColor: '#e8e8e8' }} id="parent">
-            <Header onChange={handleSearch} value={searchText}/>
-            {/* <input onChange={(e) => setSearchText(e.target.value.toLowerCase())} value={searchText} placeholder="Search todos" /> */}
-            <button className="createButton" onClick={handleModalOpen}>+</button>
-            <div style={{ backgroundColor: '#e8e8e8        ' }}>
-            <div
-      className="modal show"
-      style={{ display: 'block', position: 'initial' }}
-    >
-  <Modal show={modalIsOpen} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Create</Modal.Title>
-        </Modal.Header>
-                 <Modal.Body>
-           <div className="mb-3">
-             <InputText 
-               label="Todo" 
-               placeholder="Enter todo description" 
-               type="text" 
-               id="todo"
-               name="todo"
-               value={formData.todo}
-               onChange={handleInputChange}
-               className={errors.todo ? 'is-invalid' : ''}
-             />
-             {errors.todo && <div className="invalid-feedback">{errors.todo}</div>}
-           </div>
-           
-           <div className="mb-3">
-             <InputText 
-               label="User ID" 
-               placeholder="Enter user ID" 
-               type="number" 
-               id="userId"
-               name="userId"
-               value={formData.userId}
-               onChange={handleInputChange}
-               className={errors.userId ? 'is-invalid' : ''}
-             />
-             {errors.userId && <div className="invalid-feedback">{errors.userId}</div>}
-           </div>
-         </Modal.Body>
-         <Modal.Footer>
-           <Button variant="secondary" onClick={handleClose}>
-             Cancel
-           </Button>
-           <Button variant="primary" onClick={handleSubmit}>
-             Create Todo
-           </Button>
-         </Modal.Footer>
-      </Modal>
-    </div>
+        <div className="dashboard-container" id="parent">
+            <Header onChange={handleSearch} value={searchText} />
+            <button className="create-button" onClick={handleModalOpen}>+</button>
+            <div className="dashboard-content">
+                <div className="modal-container">
+                    <Modal show={modalIsOpen} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Create</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className="mb-3">
+                                <InputText
+                                    label="Todo"
+                                    placeholder="Enter todo description"
+                                    type="text"
+                                    id="todo"
+                                    name="todo"
+                                    value={formData.todo}
+                                    onChange={handleInputChange}
+                                    className={errors.todo ? 'is-invalid' : ''}
+                                />
+                                {errors.todo && <div className="invalid-feedback">{errors.todo}</div>}
+                            </div>
+
+                            <div className="mb-3">
+                                <InputText
+                                    label="User ID"
+                                    placeholder="Enter user ID"
+                                    type="number"
+                                    id="userId"
+                                    name="userId"
+                                    value={formData.userId}
+                                    onChange={handleInputChange}
+                                    className={errors.userId ? 'is-invalid' : ''}
+                                />
+                                {errors.userId && <div className="invalid-feedback">{errors.userId}</div>}
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Cancel
+                            </Button>
+                            <Button variant="primary" onClick={handleSubmit}>
+                                Create Todo
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </div>
                 <Container>
                     <DndContext
                         sensors={sensors}
@@ -210,7 +197,7 @@ const Dashboard: React.FC = () => {
                                     items={filteredTodos}
                                     columns={3}
                                     renderItem={(todo) => (
-                                        <div className="mb-3 todoCard">
+                                        <div className="todo-card">
                                             <SortableCard todo={todo} />
                                         </div>
                                     )}

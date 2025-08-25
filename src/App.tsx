@@ -1,33 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Suspense, lazy } from 'react';
 import './App.css';
-import Login from './containers/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles/card.css'
+import './styles/card.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
-import Dashboard from './containers/Dashbord';
+
+const Login = lazy(() => import('./containers/Login'));
+const Dashboard = lazy(() => import('./containers/Dashbord'));
+
+const LoadingSpinner = () => (
+  <div style={{ 
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    height: '100vh',
+    fontSize: '1.2rem',
+    color: '#666'
+  }}>
+    Loading...
+  </div>
+);
 
 function App() {
-  const isAuthenticated=true
+  const isAuthenticated = true;
+  
   return (
     <Router>
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/" element={<Login />} />
-      <Route path="/login" element={<Login />} />
-
-      {/* Private Routes */}
-      <Route element={<PrivateRoute isAuthenticated={isAuthenticated} defaultRoute={''} />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        {/* <Route path="/profile" element={<UserProfilePage />} /> */}
-        {/* Add more private routes here */}
-      </Route>
-
-      {/* Catch-all for 404 Not Found */}
-      <Route path="*" element={<div>404 Not Found</div>} />
-    </Routes>
-  </Router>
+      <Suspense fallback={<LoadingSpinner />}>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route element={<PrivateRoute isAuthenticated={isAuthenticated} defaultRoute={''} />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
+          <Route path="*" element={<div>404 Not Found</div>} />
+        </Routes>
+      </Suspense>
+    </Router>
   );
 }
 

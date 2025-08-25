@@ -7,7 +7,6 @@ export const initialState: TodoStatepayload = {
 };
 
 export function TodoReducer(state: TodoState, action: Action): TodoState {
-  console.log('action....', action)
   switch (action.type) {
     case "LOADING":
       return { ...state, isLoading: true, errorMsg: null };

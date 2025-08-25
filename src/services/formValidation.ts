@@ -5,7 +5,6 @@ export const validateTodoForm = (formData: TodoFormData): { errors: TodoFormErro
     const errors: TodoFormErrors = { todo: '', userId: '' };
     let isValid = true;
 
-    // Validate todo field
     if (!formData.todo.trim()) {
         errors.todo = 'Todo is required';
         isValid = false;

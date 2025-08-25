@@ -16,14 +16,12 @@ export const TodoProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(TodoReducer, initialState);
 
   const getUsers = async () => {
-    console.log('xxxx.....',BASE_URL)
     dispatch({ type: "LOADING" });
     try {
       axios.get(`${BASE_URL}/todos`)
       .then(response => {
         // Handle successful response
         dispatch({ type: "SET_TODOS", payload: response.data.todos }); 
-        console.log('ff....',response.data); // Access the retrieved data
       })
       .catch(error => {
         // Handle error
